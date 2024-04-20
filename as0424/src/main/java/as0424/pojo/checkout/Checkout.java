@@ -15,8 +15,8 @@ public class Checkout {
 	 * @param toolCode - Unique tool code/id
 	 * @param rentalDaycount - Number of days requested to rent the tool 
 	 */
-	public Checkout(String toolCode, int rentalDaycount) {
-		this(toolCode, rentalDaycount, 0);
+	public Checkout(String toolCode, int rentalDaycount, LocalDate checkoutDate) {
+		this(toolCode, rentalDaycount, 0, checkoutDate);
 	}
 	
 	/**
@@ -25,11 +25,11 @@ public class Checkout {
 	 * @param rentalDayCount - Number of days requested to rent the tool 
 	 * @param discount - Discount amount applied to rental charges. Integer representation of discount (ex. 20 is equivalent to 20%)
 	 */
-	public Checkout(String toolCode, int rentalDayCount, int discount) {
+	public Checkout(String toolCode, int rentalDayCount, int discount, LocalDate checkoutDate) {
 		this.setToolCode(toolCode);
 		this.setRentalDayCount(rentalDayCount);
 		this.setDiscount(discount);
-		this.setCheckoutDate(LocalDate.now());
+		this.setCheckoutDate(checkoutDate);
 	}
 
 	public String getToolCode() {
