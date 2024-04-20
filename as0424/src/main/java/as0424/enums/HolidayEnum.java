@@ -10,34 +10,37 @@ import java.time.temporal.TemporalAdjusters;
  * and includes two helper methods which may be shared if future holidays require them.
  */
 public enum HolidayEnum {
-	JULY_FOURTH(LocalDate.of(Year.now().getValue(), 7, 4)) {
+	JULY_FOURTH(7, 4) {
 		@Override
-		public LocalDate getObservableDate() {
-			return HolidayEnum.getClosestWeekday(this.referenceDate);
+		public LocalDate getObservableDate(int referenceYear) { 
+			return HolidayEnum.getClosestWeekday(this.referenceDay, this.referenceMonth, referenceYear);
 		}
 	},
-	LABOR_DAY(LocalDate.of(Year.now().getValue(), 9, 1)) {
+	LABOR_DAY(9, 1) {
 		@Override
-		public LocalDate getObservableDate() {
-			return HolidayEnum.getFirstMonday(this.referenceDate);
+		public LocalDate getObservableDate(int referenceYear) {
+			return HolidayEnum.getFirstMonday(this.referenceDay, this.referenceMonth, referenceYear);
 		}
-	},
-	TEST_DAY(LocalDate.of(Year.now().getValue(), 4, 20)) {
-		@Override
-		public LocalDate getObservableDate() {
-			return HolidayEnum.getClosestWeekday(this.referenceDate);
-		}
-	},;
+	};
 	
-	protected LocalDate referenceDate;
-	public abstract LocalDate getObservableDate();
+	protected int referenceDay;
+	protected int referenceMonth;
+	
+	/**
+	 * Looks up the observable date of a holiday based on the year provided.
+	 * @param referenceYear - The desired year of the observable holiday
+	 * @return LocalDate - The observable holiday date
+	 */
+	public abstract LocalDate getObservableDate(int referenceYear);
 	
 	
-	private HolidayEnum(LocalDate referenceDate) {
-		this.referenceDate = referenceDate;
+	private HolidayEnum(int referenceMonth, int referenceDay) {
+		this.referenceMonth = referenceMonth;
+		this.referenceDay = referenceDay;
 	}
 
-	private static LocalDate getClosestWeekday(LocalDate referenceDate) {
+	private static LocalDate getClosestWeekday(int referenceDay, int referenceMonth, int referenceYear) {
+		LocalDate referenceDate = LocalDate.of(referenceYear, referenceMonth, referenceDay);
 		DayOfWeek dayOfWeek = referenceDate.getDayOfWeek();
 		
 		// Check if July 4th falls on a weekend and return the closest day as observed date.
@@ -51,9 +54,10 @@ public enum HolidayEnum {
 		}
 	}
 	
-	private static LocalDate getFirstMonday(LocalDate referenceDate) {
+	private static LocalDate getFirstMonday(int referenceDay, int referenceMonth, int referenceYear) {
 		// Get a local date representation of September of this year and use the built in
 		// Java TemporalAdjusters to get the first Monday of the month.
+		LocalDate referenceDate = LocalDate.of(referenceYear, referenceMonth, referenceDay);
 		return referenceDate.with(TemporalAdjusters.firstInMonth(DayOfWeek.MONDAY));
 	}
 }

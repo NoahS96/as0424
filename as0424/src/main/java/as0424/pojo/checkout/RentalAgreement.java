@@ -23,6 +23,7 @@ public class RentalAgreement {
 	private BigDecimal preDiscountCharge;
 	private BigDecimal discountAmount;
 	private BigDecimal finalCharge;
+	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/YY");
 	
 	
@@ -35,7 +36,7 @@ public class RentalAgreement {
 		this.discountAmount = calculateDiscountAmount();
 		this.finalCharge = calculateFinalCharge();
 	}
-
+ 
 
 	public Tool getTool() {
 		return tool;
@@ -46,12 +47,34 @@ public class RentalAgreement {
 		return checkout;
 	}
 
+	public LocalDate getDueDate() {
+		return dueDate;
+	}
+	
+	public int getChargeableDays() {
+		return chargeableDays;
+	}
+	
+	public BigDecimal getPreDiscountCharge() {
+		return preDiscountCharge;
+	}
+	
+	public BigDecimal getDiscountAmount() {
+		return discountAmount;
+	}
+	
+	public BigDecimal getFinalCharge() {
+		return finalCharge;
+	}
+	
 	/**
-	 * Take the checkout date and add the rental day count
+	 * Take the checkout date and add the rental day count. Subtract 1 to account for the charge on the rental day.
+	 * 01/01/2024 plus 5 days is 01/06/2024 however this is exclusive of the charge on the rental day. By subtracting
+	 * 1 this is inclusive of the rental day. This should be clarified in the requirements.
 	 * @return LocalDate - A representation of the due date
 	 */
 	private LocalDate calculateDueDate() {
-		return  checkout.getCheckoutDate().plusDays(checkout.getRentalDayCount());
+		return  checkout.getCheckoutDate().plusDays(checkout.getRentalDayCount() - 1);
 	}
 	
 	/**
@@ -66,19 +89,21 @@ public class RentalAgreement {
 		int holidayCount = 0; // Need to figure out if holidays should be in abstract class or try enum
 		int totalChargeableDays = 0;
 		
-		List<LocalDate> holidays = Stream.of(HolidayEnum.values()).map(holiday -> holiday.getObservableDate()).collect(Collectors.toList());
+		List<LocalDate> holidays = Stream.of(HolidayEnum.values())
+				.map(holiday -> holiday.getObservableDate(checkout.getCheckoutDate().getYear()))
+				.collect(Collectors.toList());
 		LocalDate date = checkout.getCheckoutDate();
 		
 		// Check if holidays fall between dates. Sub 1 from start and add 1 to end to check if start or end are holidays.
 		for (LocalDate holiday : holidays) {
 			if (holiday.isAfter(date.minusDays(1)) && holiday.isBefore(this.dueDate.plusDays(1))) {
-				holidayCount++;
+				holidayCount++; 
 			}
 		}
 		
 		// From the checkout date to our due date plus 1 (to make sure we charge on the due date) we
 		// get the count of weekdays and weekends.
-		while (date.isBefore(this.dueDate)) {
+		while (date.isBefore(this.dueDate.plusDays(1))) {
 			DayOfWeek dayOfWeek = date.getDayOfWeek();
 			if (dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY)) {
 				weekendDayCount++;
@@ -160,5 +185,6 @@ public class RentalAgreement {
 		System.out.println("Discount Percent: " + checkout.getDiscount() + "%");
 		System.out.println("Discount Amount: " + getCurrencyFormattedDecimal(discountAmount));
 		System.out.println("Final Charge: " + getCurrencyFormattedDecimal(finalCharge));
+		System.out.println();
 	}
 }
