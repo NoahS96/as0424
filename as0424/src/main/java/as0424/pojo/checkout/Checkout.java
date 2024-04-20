@@ -2,6 +2,8 @@ package main.java.as0424.pojo.checkout;
 
 import java.time.LocalDate;
 
+import main.java.as0424.exceptions.CheckoutException;
+
 public class Checkout {
 
 	private String toolCode;
@@ -15,7 +17,7 @@ public class Checkout {
 	 * @param toolCode - Unique tool code/id
 	 * @param rentalDaycount - Number of days requested to rent the tool 
 	 */
-	public Checkout(String toolCode, int rentalDaycount, LocalDate checkoutDate) {
+	public Checkout(String toolCode, int rentalDaycount, LocalDate checkoutDate) throws CheckoutException {
 		this(toolCode, rentalDaycount, 0, checkoutDate);
 	}
 	
@@ -25,7 +27,14 @@ public class Checkout {
 	 * @param rentalDayCount - Number of days requested to rent the tool 
 	 * @param discount - Discount amount applied to rental charges. Integer representation of discount (ex. 20 is equivalent to 20%)
 	 */
-	public Checkout(String toolCode, int rentalDayCount, int discount, LocalDate checkoutDate) {
+	public Checkout(String toolCode, int rentalDayCount, int discount, LocalDate checkoutDate) throws CheckoutException {
+		if (discount < 0 || discount > 100) {
+			throw new CheckoutException("Discount must between 0 and 100");
+		}
+		if (rentalDayCount <= 0) {
+			throw new CheckoutException("Rental day count must be 1 or greater");
+		}
+		
 		this.setToolCode(toolCode);
 		this.setRentalDayCount(rentalDayCount);
 		this.setDiscount(discount);
