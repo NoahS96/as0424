@@ -27,6 +27,11 @@ public class RentalAgreement {
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/YY");
 	
 	
+	/**
+	 * 
+	 * @param tool - Tool 
+	 * @param checkout - Checkout
+	 */
 	public RentalAgreement(Tool tool, Checkout checkout) {
 		this.tool = tool;
 		this.checkout = checkout;
@@ -34,7 +39,7 @@ public class RentalAgreement {
 		this.chargeableDays = calculateChargeableDays();
 		this.preDiscountCharge = calculatePreDiscountCharge();
 		this.discountAmount = calculateDiscountAmount();
-		this.finalCharge = calculateFinalCharge();
+		this.finalCharge = calculateFinalCharge(); 
 	}
  
 
@@ -160,6 +165,11 @@ public class RentalAgreement {
 		return preDiscountCharge.subtract(discountAmount).setScale(2, RoundingMode.HALF_UP);
 	}
 	
+	/**
+	 * Converts the input into a $ formatted string (ex. $1,065.00)
+	 * @param decimal - BigDecimal
+	 * @return String - dollar formatted string
+	 */
 	private String getCurrencyFormattedDecimal(BigDecimal decimal) {
 		return NumberFormat.getCurrencyInstance(Locale.US).format(decimal);
 	}

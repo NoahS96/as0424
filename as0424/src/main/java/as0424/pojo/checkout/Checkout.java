@@ -16,6 +16,8 @@ public class Checkout {
 	 * 
 	 * @param toolCode - Unique tool code/id
 	 * @param rentalDaycount - Number of days requested to rent the tool 
+	 * @param checkoutDate - The date of the checkout transaction
+	 * @throws CheckoutException
 	 */
 	public Checkout(String toolCode, int rentalDaycount, LocalDate checkoutDate) throws CheckoutException {
 		this(toolCode, rentalDaycount, 0, checkoutDate);
@@ -23,9 +25,11 @@ public class Checkout {
 	
 	/**
 	 * 
-	 * @param toolCode - Unique tool code/id
+	 * @param toolCode - Unique tool code/id 
 	 * @param rentalDayCount - Number of days requested to rent the tool 
 	 * @param discount - Discount amount applied to rental charges. Integer representation of discount (ex. 20 is equivalent to 20%)
+	 * @param checkoutDate - The date of the checkout transaction
+	 * @throws CheckoutException 
 	 */
 	public Checkout(String toolCode, int rentalDayCount, int discount, LocalDate checkoutDate) throws CheckoutException {
 		if (discount < 0 || discount > 100) {
