@@ -33,10 +33,10 @@ public class Checkout {
 	 */
 	public Checkout(String toolCode, int rentalDayCount, int discount, LocalDate checkoutDate) throws CheckoutException {
 		if (discount < 0 || discount > 100) {
-			throw new CheckoutException("Discount must between 0 and 100");
+			throw new CheckoutException("Discount percent is not in the range 0-100");
 		}
 		if (rentalDayCount <= 0) {
-			throw new CheckoutException("Rental day count must be 1 or greater");
+			throw new CheckoutException("Rental day count is not 1 or greater");
 		}
 		
 		this.setToolCode(toolCode);
