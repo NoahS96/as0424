@@ -37,7 +37,7 @@ class RentalTests {
 			}
 		);
 		
-		assertEquals("Discount must between 0 and 100", exception.getMessage());
+		assertEquals("Discount percent is not in the range 0-100", exception.getMessage());
 	}
 
 	@Test
