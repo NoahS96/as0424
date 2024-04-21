@@ -91,7 +91,7 @@ public class RentalAgreement {
 		// non-chargeable days.
 		int weekdayCount = 0;
 		int weekendDayCount = 0;
-		int holidayCount = 0; // Need to figure out if holidays should be in abstract class or try enum
+		int holidayCount = 0; 
 		int totalChargeableDays = 0;
 		
 		List<LocalDate> holidays = Stream.of(HolidayEnum.values())
