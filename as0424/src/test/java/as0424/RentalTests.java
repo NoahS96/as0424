@@ -2,7 +2,6 @@ package test.java.as0424;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ class RentalTests {
 	
 	@Test
 	void discountTooLargeTest() {
-		String toolCode = RIDGID_JACKHAMMER;
+		String toolCode = RIDGID_JACKHAMMER; 
 		LocalDate checkoutDate = LocalDate.of(2015, 9, 3);
 		
 		Throwable exception = assertThrows(
