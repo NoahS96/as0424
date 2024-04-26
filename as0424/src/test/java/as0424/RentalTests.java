@@ -12,6 +12,7 @@ import main.java.as0424.pojo.checkout.RentalAgreement;
 import main.java.as0424.pojo.tool.Chainsaw;
 import main.java.as0424.pojo.tool.Jackhammer;
 import main.java.as0424.pojo.tool.Ladder;
+import main.java.as0424.service.RentalService;
 
 class RentalTests {
 
@@ -23,6 +24,8 @@ class RentalTests {
 	private static final String WERNER_BRAND = "Werner";
 	private static final String STIHL_CHAINSAW = "CHNS";
 	private static final String STIHL_BRAND = "Stihl";
+	
+	private static final RentalService rentalService = new RentalService();
 	
 	
 	@Test
@@ -48,7 +51,7 @@ class RentalTests {
 		
 		try {
 			Checkout checkout = new Checkout(toolCode, 3, 10, checkoutDate);
-			RentalAgreement rentalAgreement = new RentalAgreement(new Ladder(toolCode, toolBrand), checkout);
+			RentalAgreement rentalAgreement = rentalService.generateAgreement(new Ladder(toolCode, toolBrand), checkout);
 			System.out.println("[Non-Chargeable Holiday Test]");
 			rentalAgreement.printAgreement();
 			
@@ -67,7 +70,7 @@ class RentalTests {
 		
 		try {
 			Checkout checkout = new Checkout(toolCode, 5, 25, checkoutDate);
-			RentalAgreement rentalAgreement = new RentalAgreement(new Chainsaw(toolCode, toolBrand), checkout);
+			RentalAgreement rentalAgreement = rentalService.generateAgreement(new Chainsaw(toolCode, toolBrand), checkout);
 			System.out.println("[Chargeable Holiday and Weekday Test]");
 			rentalAgreement.printAgreement();
 			
@@ -86,7 +89,7 @@ class RentalTests {
 		
 		try {
 			Checkout checkout = new Checkout(toolCode, 6, 0, checkoutDate);
-			RentalAgreement rentalAgreement = new RentalAgreement(new Jackhammer(toolCode, toolBrand), checkout);
+			RentalAgreement rentalAgreement = rentalService.generateAgreement(new Jackhammer(toolCode, toolBrand), checkout);
 			System.out.println("[Non-Chargeable Holiday and Weekend Test]");
 			rentalAgreement.printAgreement();
 			
@@ -105,7 +108,7 @@ class RentalTests {
 		
 		try {
 			Checkout checkout = new Checkout(toolCode, 9, 0, checkoutDate);
-			RentalAgreement rentalAgreement = new RentalAgreement(new Jackhammer(toolCode, toolBrand), checkout);
+			RentalAgreement rentalAgreement = rentalService.generateAgreement(new Jackhammer(toolCode, toolBrand), checkout);
 			System.out.println("[Non-Chargeable Holiday and Weekend Test 2]");
 			rentalAgreement.printAgreement();
 			
@@ -124,7 +127,7 @@ class RentalTests {
 		
 		try {
 			Checkout checkout = new Checkout(toolCode, 4, 50, checkoutDate);
-			RentalAgreement rentalAgreement = new RentalAgreement(new Jackhammer(toolCode, toolBrand), checkout);
+			RentalAgreement rentalAgreement = rentalService.generateAgreement(new Jackhammer(toolCode, toolBrand), checkout);
 			System.out.println("[Discount with Non-Chargeable Holiday and Weekend Test]");
 			rentalAgreement.printAgreement();
 			
